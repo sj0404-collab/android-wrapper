@@ -93,8 +93,17 @@ public class MainActivity extends FragmentActivity {
         viewPager.setOffscreenPageLimit(4);
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            tab.setText(new String[]{"DNS", "Proxy", "VPN", "Apps", "Logs"}[position]);
-            tab.setIcon(new int[]{R.drawable.ic_dns, R.drawable.ic_proxy, R.drawable.ic_vpn, R.drawable.ic_inject, R.drawable.ic_logs}[position]);
+            tab.setText(new String[]{
+                getString(R.string.tab_dns),
+                getString(R.string.tab_proxy),
+                getString(R.string.tab_vpn),
+                getString(R.string.tab_apps),
+                getString(R.string.tab_logs)
+            }[position]);
+            tab.setIcon(new int[]{
+                R.drawable.ic_dns, R.drawable.ic_proxy, R.drawable.ic_vpn,
+                R.drawable.ic_apps, R.drawable.ic_logs
+            }[position]);
         }).attach();
 
         addLog("INFO", "App started");
@@ -610,7 +619,7 @@ public class MainActivity extends FragmentActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.tab_inject, container, false);
+            View v = inflater.inflate(R.layout.tab_apps, container, false);
             etFilter = v.findViewById(R.id.et_app_filter);
             Button btnUser = v.findViewById(R.id.btn_select_user);
             Button btnAll = v.findViewById(R.id.btn_select_all);

@@ -1,31 +1,62 @@
-# Пример конфигурации модулей
-# Поместите этот файл в /assets/ или загрузите через SAF
+# VPN Wrapper
 
-## Доступные модули:
+Модульная обёртка для Android, из которой осталась **только VPN-составляющая**.
 
-### TTS (Text-to-Speech)
-- engine: google, pico
-- language: ru-RU, en-US и др.
-- speed: 0.5 - 2.0
-- pitch: 0.5 - 2.0
+Приложение поднимает `VpnService`, заворачивает трафик в туннель до выбранного
+сервера по HTTP CONNECT и продолжает работать в фоне как foreground-сервис.
 
-### OCR (Распознавание текста)
-- engine: mlkit
-- languages: массив языков
-- auto_translate: true/false
+## Возможности
 
-### Translator
-- engine: google, yandex
-- source_lang: auto, ru, en и др.
-- target_lang: ru, en и др.
+- Список серверов: DNS, Proxy и VPN-протоколы, плюс свои серверы
+- Проверка пинга всех серверов, тест скорости, проверка внешнего IP
+- Per-app VPN: маршрутизация только выбранных приложений через туннель
+- Статистика: отправлено/принято байт, текущая скорость, пинг, jitter
+- Foreground-уведомление с кнопкой «Отключить» и живой статистикой
+- Плитка в шторке быстрых настроек для включения/выключения
+- Автовосстановление соединения после перезагрузки
 
-### Router
-- rules: массив правил маршрутизации
-  - app: пакет приложения
-  - action: intercept, redirect, modify
-  - target: какой модуль использовать
+## Где запускается
 
-## Добавление новых модулей:
-1. Создайте папку в /assets/modules/[имя_модуля]/
-2. Добавьте config.json с настройками
-3. Реализуйте интерфейс модуля в коде
+| Точка входа | Описание |
+|---|---|
+| Иконка приложения | Полный UI: серверы, приложения, логи |
+| Плитка в шторке | Вкл/выкл без открытия приложения |
+| Уведомление | Открывает приложение, кнопка отключения |
+| После перезагрузки | `BootReceiver` поднимает VPN, если он был включён |
+| `VpnActivity` | Отдельный экран подключения |
+
+## Разрешения
+
+Только то, что нужно VPN:
+
+- `INTERNET`, `ACCESS_NETWORK_STATE` — сеть
+- `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE` — работа в фоне
+- `POST_NOTIFICATIONS` — уведомление о подключении
+- `RECEIVE_BOOT_COMPLETED` — автостарт после перезагрузки
+- `WAKE_LOCK` — не давать заснуть
+
+## Сборка
+
+```bash
+./gradlew assembleDebug
+```
+
+APK: `app/build/outputs/apk/debug/app-debug.apk`
+
+Сборка и тест прогоняются в GitHub Actions (`.github/workflows/build.yml`),
+результат доступен как артефакты `app-debug` и `app-release`.
+
+## Структура
+
+```
+app/src/main/java/com/wrapper/
+├── vpn/
+│   ├── BrowsecVpnService.java   # VpnService, туннели, foreground-уведомление
+│   ├── VpnActivity.java         # экран подключения
+│   ├── VpnNotificationManager.java
+│   ├── NetworkMonitor.java      # пинг, скорость, jitter
+│   ├── VpnTileService.java      # плитка в шторке
+│   └── BootReceiver.java        # автостарт после перезагрузки
+└── ui/
+    └── MainActivity.java        # вкладки DNS / Proxy / VPN / Apps / Logs
+```

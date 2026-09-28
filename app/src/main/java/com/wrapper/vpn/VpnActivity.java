@@ -2,8 +2,10 @@ package com.wrapper.vpn;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.VpnService;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -43,6 +45,7 @@ public class VpnActivity extends AppCompatActivity {
         initViews();
         setupServers();
         setupNetworkMonitor();
+        requestNotificationPermission();
     }
 
     private void initViews() {
@@ -60,7 +63,7 @@ public class VpnActivity extends AppCompatActivity {
         btnConnect.setOnClickListener(v -> startVpn());
         btnDisconnect.setOnClickListener(v -> stopVpn());
 
-        updateStatus("Отключено");
+        updateStatus(getString(R.string.disconnected));
         tvPing.setText("Пинг: —");
         tvSpeed.setText("Скорость: —");
         tvJitter.setText("Jitter: —");
@@ -70,6 +73,15 @@ public class VpnActivity extends AppCompatActivity {
     private void setupNetworkMonitor() {
         networkMonitor = new NetworkMonitor();
         networkMonitor.setUpdateCallback(this::updateNetworkStats);
+    }
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 200);
+            }
+        }
     }
 
     private void updateNetworkStats() {
@@ -125,7 +137,7 @@ public class VpnActivity extends AppCompatActivity {
         startService(intent);
         vpnRunning = false;
         networkMonitor.stop();
-        updateStatus("Отключено");
+        updateStatus(getString(R.string.disconnected));
         btnConnect.setEnabled(true);
         btnDisconnect.setEnabled(false);
         tvPing.setText("Пинг: —");
@@ -143,23 +155,20 @@ public class VpnActivity extends AppCompatActivity {
             startService(intent);
             vpnRunning = true;
             networkMonitor.start();
-            updateStatus("Подключено");
+            updateStatus(getString(R.string.connected));
             btnConnect.setEnabled(false);
             btnDisconnect.setEnabled(true);
         }
     }
 
     private void updateStatus(String status) {
+        boolean connected = getString(R.string.connected).equals(status);
         tvStatus.setText("Статус: " + status);
         BrowsecVpnService.VpnServer server = BrowsecVpnService.getServers().get(selectedServer);
         if (server != null) {
             tvServer.setText("Сервер: " + server.flag + " " + server.name);
         }
-        if ("Подключено".equals(status)) {
-            tvStatus.setTextColor(0xFF4CAF50);
-        } else {
-            tvStatus.setTextColor(0xFFF44336);
-        }
+        tvStatus.setTextColor(connected ? 0xFF4CAF50 : 0xFFF44336);
     }
 
     @Override
