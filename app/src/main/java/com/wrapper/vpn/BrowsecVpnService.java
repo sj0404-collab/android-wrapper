@@ -17,6 +17,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.wrapper.R;
 import com.wrapper.ui.MainActivity;
+import com.wrapper.vpn.ext.ServerStore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -55,6 +56,7 @@ public class BrowsecVpnService extends VpnService {
     public static final String EXTRA_COUNTRY = "country";
     public static final String EXTRA_ALL_APPS = "allApps";
     public static final String EXTRA_APPS     = "apps";
+    public static final String EXTRA_MODE     = "mode";
 
     private static final String TAG = "BrowsecVPN";
     private static final String CHANNEL_ID = "vpn_channel";
@@ -71,6 +73,17 @@ public class BrowsecVpnService extends VpnService {
     public static final String PREF_KILL_SWITCH = "kill_switch";
 
     private final IBinder binder = new LocalBinder();
+
+    /** Нужен статическим хелперам, которые не имеют доступа к Context. */
+    private static volatile BrowsecVpnService instance;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+        nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        createChannel();
+    }
 
     public class LocalBinder extends android.os.Binder {
         public BrowsecVpnService getService() {
@@ -97,6 +110,12 @@ public class BrowsecVpnService extends VpnService {
     private volatile long currentSpeedBps;
 
     private final ConcurrentHashMap<String, Tunnel> tunnels = new ConcurrentHashMap<>();
+
+    /**
+     * Активный режим: встроенные серверы или импорт из расширения.
+     * Туннель в обоих случаях один и тот же нативный.
+     */
+    private volatile String activeMode = ServerStore.MODE_BUILTIN;
 
     private static final Map<String, VpnServer> SERVERS = new LinkedHashMap<>();
     static {
@@ -131,6 +150,14 @@ public class BrowsecVpnService extends VpnService {
 
     private static final Map<String, VpnServer> CUSTOM = new LinkedHashMap<>();
 
+    /**
+     * Серверы для указанного режима. Режим расширения при отсутствии
+     * импортированных серверов молча откатывается на встроенные.
+     */
+    public static Map<String, VpnServer> getServersForMode(String mode) {
+        return ServerStore.get(instance).getServersForMode(mode);
+    }
+
     public static synchronized void addCustomServer(String name, String host, int port) {
         String code = "custom_" + System.currentTimeMillis();
         CUSTOM.put(code, new VpnServer(code, name, host, port, "🔧"));
@@ -144,13 +171,6 @@ public class BrowsecVpnService extends VpnService {
         Map<String, VpnServer> all = new LinkedHashMap<>(SERVERS);
         all.putAll(CUSTOM);
         return all;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        createChannel();
     }
 
     private void createChannel() {
@@ -189,10 +209,21 @@ public class BrowsecVpnService extends VpnService {
 
     private String resolveServerCode(Intent intent) {
         if (intent != null) {
+            String mode = intent.getStringExtra(EXTRA_MODE);
+            if (mode != null) {
+                activeMode = mode;
+            } else {
+                activeMode = ServerStore.get(this).getMode();
+            }
             String cc = intent.getStringExtra(EXTRA_COUNTRY);
-            if (cc != null && !cc.isEmpty() && getServers().containsKey(cc)) return cc;
+            if (cc != null && !cc.isEmpty() && getServersForMode(activeMode).containsKey(cc)) return cc;
         }
-        return prefs().getString(PREF_SERVER, "vpn_nl");
+        if (instance == null) activeMode = ServerStore.MODE_BUILTIN;
+
+        String saved = prefs().getString(PREF_SERVER, "");
+        Map<String, VpnServer> pool = getServersForMode(activeMode);
+        if (saved != null && pool.containsKey(saved)) return saved;
+        return pool.keySet().iterator().next();
     }
 
     private boolean resolveAllApps(Intent intent) {
@@ -232,10 +263,11 @@ public class BrowsecVpnService extends VpnService {
     private void startVpn(String countryCode, boolean all, Set<String> apps) {
         if (running) stopInternal();
 
-        VpnServer server = getServers().get(countryCode);
+        Map<String, VpnServer> pool = getServersForMode(activeMode);
+        VpnServer server = pool.get(countryCode);
         if (server == null) {
             Log.e(TAG, "Unknown server: " + countryCode + ", falling back");
-            server = getServers().get("vpn_nl");
+            server = pool.values().iterator().next();
         }
         if (server == null) {
             Log.e(TAG, "No server available");
@@ -724,6 +756,7 @@ public class BrowsecVpnService extends VpnService {
     // ===== Public API =====
 
     public boolean isRunning() { return running; }
+    public String getActiveMode() { return activeMode; }
     public VpnServer getCurrentServer() { return currentServer; }
     public long getBytesSent() { return bytesSent.get(); }
     public long getBytesReceived() { return bytesReceived.get(); }

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0a0a1a"
+    android:padding="16dp">
+
+    <!-- Переключатель режима -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Режим VPN"
+        android:textSize="13sp"
+        android:textColor="#00d4ff"/>
+
+    <RadioGroup
+        android:id="@+id/rg_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <RadioButton
+            android:id="@+id/rb_mode_builtin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Встроенный"
+            android:textColor="#c0c0c0"
+            android:textSize="12sp"/>
+
+        <RadioButton
+            android:id="@+id/rb_mode_extension"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Из расширения"
+            android:textColor="#c0c0c0"
+            android:textSize="12sp"/>
+    </RadioGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="#1a1a3a"/>
+
+    <!-- Блок расширения -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Браузерное VPN-расширение"
+        android:textSize="13sp"
+        android:textColor="#00d4ff"/>
+
+    <TextView
+        android:id="@+id/tv_ext_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Расширение не импортировано"
+        android:textSize="12sp"
+        android:textColor="#808090"/>
+
+    <TextView
+        android:id="@+id/tv_ext_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="11sp"
+        android:textColor="#ffb300"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+
+        <Button
+            android:id="@+id/btn_import_ext"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:text="Импорт .crx"
+            android:backgroundTint="#1a2a3a"
+            android:textColor="#00d4ff"
+            android:textSize="12sp"
+            android:layout_marginEnd="6dp"/>
+
+        <Button
+            android:id="@+id/btn_clear_ext"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:text="Очистить"
+            android:backgroundTint="#2a1a1a"
+            android:textColor="#F44336"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Туннель в обоих режимах нативный: VpnService + HTTP CONNECT. Расширение используется только как источник адресов серверов, его код не выполняется."
+        android:textSize="11sp"
+        android:textColor="#606070"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Серверы расширения"
+        android:textSize="13sp"
+        android:textColor="#00d4ff"/>
+
+    <TextView
+        android:id="@+id/tv_ext_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="—"
+        android:textSize="11sp"
+        android:textColor="#808090"/>
+
+    <ListView
+        android:id="@+id/lv_ext_servers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="6dp"
+        android:divider="#1a1a3a"
+        android:dividerHeight="1dp"/>
+
+</LinearLayout>

@@ -90,7 +90,7 @@ public class MainActivity extends FragmentActivity {
 
         pagerAdapter = new MainPagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setOffscreenPageLimit(4);
+        viewPager.setOffscreenPageLimit(5);
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             tab.setText(new String[]{
@@ -98,11 +98,12 @@ public class MainActivity extends FragmentActivity {
                 getString(R.string.tab_proxy),
                 getString(R.string.tab_vpn),
                 getString(R.string.tab_apps),
-                getString(R.string.tab_logs)
+                getString(R.string.tab_logs),
+                getString(R.string.tab_ext)
             }[position]);
             tab.setIcon(new int[]{
                 R.drawable.ic_dns, R.drawable.ic_proxy, R.drawable.ic_vpn,
-                R.drawable.ic_apps, R.drawable.ic_logs
+                R.drawable.ic_apps, R.drawable.ic_logs, R.drawable.ic_ext
             }[position]);
         }).attach();
 
@@ -148,7 +149,7 @@ public class MainActivity extends FragmentActivity {
         connectionMode = mode;
         currentServer = serverCode;
 
-        BrowsecVpnService.VpnServer srv = BrowsecVpnService.getServers().get(serverCode);
+        BrowsecVpnService.VpnServer srv = activeServers().get(serverCode);
         if (srv == null) {
             addLog("ERROR", "Server not found: " + serverCode);
             return;
@@ -169,7 +170,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void startVpnInternal(String serverCode, boolean dnsOnly) {
-        BrowsecVpnService.VpnServer srv = BrowsecVpnService.getServers().get(serverCode);
+        BrowsecVpnService.VpnServer srv = activeServers().get(serverCode);
         if (srv == null) return;
 
         Intent stopIntent = new Intent(this, BrowsecVpnService.class);
@@ -178,6 +179,7 @@ public class MainActivity extends FragmentActivity {
 
         Intent intent = new Intent(this, BrowsecVpnService.class);
         intent.putExtra("country", serverCode);
+        intent.putExtra("mode", com.wrapper.vpn.ext.ServerStore.get(this).getMode());
         intent.putExtra("allApps", selectedApps.isEmpty());
         if (!selectedApps.isEmpty()) {
             intent.putExtra("apps", selectedApps.toArray(new String[0]));
@@ -210,13 +212,13 @@ public class MainActivity extends FragmentActivity {
         isChecking = true;
         addLog("INFO", "Checking servers: " + filter);
 
-        for (BrowsecVpnService.VpnServer s : BrowsecVpnService.getServers().values()) {
+        for (BrowsecVpnService.VpnServer s : activeServers().values()) {
             if (filter.equals("all") || s.code.startsWith(filter)) {
                 serverPings.put(s.code, -1L);
             }
         }
 
-        for (BrowsecVpnService.VpnServer s : BrowsecVpnService.getServers().values()) {
+        for (BrowsecVpnService.VpnServer s : activeServers().values()) {
             if (!filter.equals("all") && !s.code.startsWith(filter)) continue;
             final BrowsecVpnService.VpnServer fs = s;
             executor.submit(() -> {
@@ -246,7 +248,7 @@ public class MainActivity extends FragmentActivity {
                     }
                 }
                 if (best != null) {
-                    BrowsecVpnService.VpnServer bs = BrowsecVpnService.getServers().get(best);
+                    BrowsecVpnService.VpnServer bs = activeServers().get(best);
                     addLog("INFO", "Best [" + filter + "]: " + bs.flag + " " + bs.name + " (" + bestPing + "ms)");
                 }
             });
@@ -425,6 +427,20 @@ public class MainActivity extends FragmentActivity {
     public long getSpeedResult() { return speedResult; }
     public NetworkMonitor getNetworkMonitor() { return networkMonitor; }
 
+    /** Серверы текущего режима: встроенные или импортированные из расширения. */
+    private Map<String, BrowsecVpnService.VpnServer> activeServers() {
+        return com.wrapper.vpn.ext.ServerStore.get(this).getActiveServers();
+    }
+
+    /** Вызывается вкладкой расширения при смене режима. */
+    public void onModeChanged(String mode) {
+        connectionMode = mode;
+        addLog("INFO", "Режим VPN: "
+                + (com.wrapper.vpn.ext.ServerStore.MODE_EXTENSION.equals(mode)
+                    ? "из расширения" : "встроенный"));
+        updateUI();
+    }
+
     private static class AppInfo {
         String name, packageName;
         boolean isSystem;
@@ -441,7 +457,7 @@ public class MainActivity extends FragmentActivity {
     class MainPagerAdapter extends FragmentStateAdapter {
         MainPagerAdapter(FragmentActivity fa) { super(fa); }
         @Override
-        public int getItemCount() { return 5; }
+        public int getItemCount() { return 6; }
 
         @NonNull
         @Override
@@ -451,7 +467,8 @@ public class MainActivity extends FragmentActivity {
                 case 1: return ServerFragment.newInstance("proxy");
                 case 2: return ServerFragment.newInstance("vpn");
                 case 3: return new AppsFragment();
-                case 4: return new LogsFragment();
+                case 4: return LogsFragment.newInstance();
+                case 5: return ExtensionFragment.newInstance();
                 default: return new Fragment();
             }
         }
@@ -570,7 +587,7 @@ public class MainActivity extends FragmentActivity {
 
             void refreshServers() {
                 servers.clear();
-                for (BrowsecVpnService.VpnServer s : BrowsecVpnService.getServers().values()) {
+                for (BrowsecVpnService.VpnServer s : activeServers().values()) {
                     if (filter.equals("all") || s.code.startsWith(filter)) servers.add(s);
                 }
             }
@@ -747,6 +764,11 @@ public class MainActivity extends FragmentActivity {
     // ===== Logs Fragment =====
 
     public static class LogsFragment extends Fragment {
+
+        static LogsFragment newInstance() {
+            return new LogsFragment();
+        }
+
         private ListView lvLogs;
         private LogEntryAdapter adapter;
 

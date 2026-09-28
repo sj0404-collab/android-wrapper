@@ -7,6 +7,7 @@
     <string name="tab_vpn">VPN</string>
     <string name="tab_apps">Apps</string>
     <string name="tab_logs">Logs</string>
+    <string name="tab_ext">Ext</string>
 
     <string name="connect">Подключить</string>
     <string name="disconnect">Отключить</string>
