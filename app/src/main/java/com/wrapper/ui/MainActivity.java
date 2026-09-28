@@ -427,9 +427,18 @@ public class MainActivity extends FragmentActivity {
     public long getSpeedResult() { return speedResult; }
     public NetworkMonitor getNetworkMonitor() { return networkMonitor; }
 
-    /** Серверы текущего режима: встроенные или импортированные из расширения. */
+    /**
+     * Серверы текущего режима: встроенные или импортированные из расширения.
+     * Статический метод — используется и в MainActivity, и во вложенных
+     * статических фрагментах, где нет доступа к экземпляру.
+     */
+    private static Map<String, BrowsecVpnService.VpnServer> activeServers(android.content.Context ctx) {
+        if (ctx == null) return BrowsecVpnService.getServers();
+        return com.wrapper.vpn.ext.ServerStore.get(ctx).getActiveServers();
+    }
+
     private Map<String, BrowsecVpnService.VpnServer> activeServers() {
-        return com.wrapper.vpn.ext.ServerStore.get(this).getActiveServers();
+        return activeServers(this);
     }
 
     /** Вызывается вкладкой расширения при смене режима. */
@@ -587,7 +596,7 @@ public class MainActivity extends FragmentActivity {
 
             void refreshServers() {
                 servers.clear();
-                for (BrowsecVpnService.VpnServer s : activeServers().values()) {
+                for (BrowsecVpnService.VpnServer s : activeServers(getContext()).values()) {
                     if (filter.equals("all") || s.code.startsWith(filter)) servers.add(s);
                 }
             }
