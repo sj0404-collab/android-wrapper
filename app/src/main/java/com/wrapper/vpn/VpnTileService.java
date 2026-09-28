@@ -9,6 +9,8 @@ import android.service.quicksettings.TileService;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.wrapper.R;
+
 /**
  * Плитка в шторке быстрых настроек: включает/выключает VPN без открытия приложения.
  * Состояние плитки синхронизировано с реальным состоянием сервиса.
