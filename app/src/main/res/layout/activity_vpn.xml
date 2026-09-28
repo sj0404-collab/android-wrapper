@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0a0a1a">
+
+    <!-- Status -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#0f1a0f"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tv_vpn_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Статус: Отключено"
+            android:textSize="18sp"
+            android:textColor="#F44336"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_vpn_server"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сервер: —"
+            android:textSize="13sp"
+            android:textColor="#608060"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <!-- Network Stats -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#0a120a"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Пинг"
+                android:textSize="10sp"
+                android:textColor="#608060"/>
+            <TextView
+                android:id="@+id/tv_vpn_ping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="—"
+                android:textSize="14sp"
+                android:textColor="#4CAF50"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Скорость"
+                android:textSize="10sp"
+                android:textColor="#608060"/>
+            <TextView
+                android:id="@+id/tv_vpn_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="—"
+                android:textSize="14sp"
+                android:textColor="#00d4ff"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jitter"
+                android:textSize="10sp"
+                android:textColor="#608060"/>
+            <TextView
+                android:id="@+id/tv_vpn_jitter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="—"
+                android:textSize="14sp"
+                android:textColor="#FF9800"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Трафик"
+                android:textSize="10sp"
+                android:textColor="#608060"/>
+            <TextView
+                android:id="@+id/tv_vpn_traffic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="—"
+                android:textSize="14sp"
+                android:textColor="#e040fb"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Server Selection -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Сервер:"
+        android:textSize="13sp"
+        android:textColor="#00d4ff"
+        android:padding="16dp"
+        android:paddingBottom="4dp"/>
+
+    <Spinner
+        android:id="@+id/spinner_servers"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="#12122a"/>
+
+    <ProgressBar
+        android:id="@+id/progress_vpn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/btn_vpn_connect"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Подключить"
+            android:backgroundTint="#1a3a1a"
+            android:textColor="#4CAF50"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btn_vpn_disconnect"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Отключить"
+            android:backgroundTint="#3a1a1a"
+            android:textColor="#F44336"
+            android:enabled="false"/>
+    </LinearLayout>
+
+</LinearLayout>

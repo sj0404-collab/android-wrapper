@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#0f1628"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🔒 VPN Подключен"
+        android:textSize="20sp"
+        android:textColor="#4CAF50"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/dialog_server"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Сервер: —"
+        android:textSize="14sp"
+        android:textColor="#00d4ff"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Stats Grid -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="#121a30"
+            android:padding="12dp"
+            android:layout_marginEnd="4dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Пинг"
+                android:textSize="10sp"
+                android:textColor="#6080a0"/>
+            <TextView
+                android:id="@+id/dialog_ping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="—"
+                android:textSize="16sp"
+                android:textColor="#4CAF50"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="#121a30"
+            android:padding="12dp"
+            android:layout_marginStart="4dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Скорость"
+                android:textSize="10sp"
+                android:textColor="#6080a0"/>
+            <TextView
+                android:id="@+id/dialog_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="—"
+                android:textSize="16sp"
+                android:textColor="#00d4ff"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="#121a30"
+            android:padding="12dp"
+            android:layout_marginEnd="4dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Трафик"
+                android:textSize="10sp"
+                android:textColor="#6080a0"/>
+            <TextView
+                android:id="@+id/dialog_traffic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="—"
+                android:textSize="16sp"
+                android:textColor="#e040fb"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="#121a30"
+            android:padding="12dp"
+            android:layout_marginStart="4dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IP"
+                android:textSize="10sp"
+                android:textColor="#6080a0"/>
+            <TextView
+                android:id="@+id/dialog_ip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="—"
+                android:textSize="12sp"
+                android:textColor="#FF9800"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_dialog_check_ip"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:text="🌐 Проверить IP"
+            android:textSize="12sp"
+            android:backgroundTint="#1a2a4a"
+            android:textColor="#00d4ff"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btn_dialog_close"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:text="Закрыть"
+            android:textSize="12sp"
+            android:backgroundTint="#2a1a3a"
+            android:textColor="#e040fb"/>
+    </LinearLayout>
+
+</LinearLayout>

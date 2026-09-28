@@ -1,0 +1,41 @@
+{
+  "name": "android-wrapper",
+  "version": "1.0.0",
+  "description": "Модульная обёртка для Android приложений",
+  "modules": {
+    "tts": {
+      "enabled": true,
+      "engine": "google",
+      "language": "ru-RU",
+      "speed": 1.0,
+      "pitch": 1.0
+    },
+    "ocr": {
+      "enabled": true,
+      "engine": "mlkit",
+      "languages": ["ru", "en"],
+      "auto_translate": false
+    },
+    "translator": {
+      "enabled": true,
+      "engine": "google",
+      "source_lang": "auto",
+      "target_lang": "ru"
+    },
+    "router": {
+      "enabled": true,
+      "rules": [
+        {
+          "app": "com.example.game",
+          "action": "intercept",
+          "target": "module:tts"
+        }
+      ]
+    }
+  },
+  "settings": {
+    "auto_install": true,
+    "debug_mode": false,
+    "log_level": "info"
+  }
+}

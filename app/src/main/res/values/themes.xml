@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Wrapper" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#16213e</item>
+        <item name="colorPrimaryVariant">#0f3460</item>
+        <item name="colorSecondary">#e94560</item>
+        <item name="android:windowBackground">#0f0f23</item>
+    </style>
+</resources>

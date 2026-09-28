@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0a0a1a">
+
+    <!-- Status card -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#0f1628"
+        android:padding="20dp"
+        android:layout_margin="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🔒 Browsec VPN" android:textSize="22sp" android:textColor="#4CAF50" android:textStyle="bold"/>
+                <TextView android:id="@+id/tv_vpn_info" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Выберите сервер" android:textSize="13sp" android:textColor="#6080a0" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <Switch android:id="@+id/switch_vpn" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <TextView android:id="@+id/tv_server_name" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="—" android:textSize="15sp" android:textColor="#00d4ff" android:layout_marginTop="8dp"/>
+
+        <!-- Stats -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="12dp">
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:background="#0a120a" android:padding="10dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Пинг" android:textSize="10sp" android:textColor="#608060"/>
+                <TextView android:id="@+id/tv_ping" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="#4CAF50" android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:background="#0a120a" android:padding="10dp" android:layout_marginStart="4dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Скорость" android:textSize="10sp" android:textColor="#608060"/>
+                <TextView android:id="@+id/tv_speed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="#00d4ff" android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:background="#0a120a" android:padding="10dp" android:layout_marginStart="4dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Jitter" android:textSize="10sp" android:textColor="#608060"/>
+                <TextView android:id="@+id/tv_jitter" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="16sp" android:textColor="#FF9800" android:textStyle="bold"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView android:id="@+id/tv_connections" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Соединения: 0" android:textSize="12sp" android:textColor="#404060" android:layout_marginTop="6dp"/>
+        <TextView android:id="@+id/tv_ip_result" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="IP: —" android:textSize="12sp" android:textColor="#404060"/>
+        <TextView android:id="@+id/tv_speed_result" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="" android:textSize="12sp" android:textColor="#00d4ff"/>
+
+        <!-- Check buttons -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="12dp">
+
+            <Button android:id="@+id/btn_check_servers" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:text="🔍 Серверы" android:textSize="11sp" android:backgroundTint="#1a2a3a" android:textColor="#00d4ff"/>
+            <Button android:id="@+id/btn_check_speed" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:text="⚡ Скорость" android:textSize="11sp" android:backgroundTint="#1a2a3a" android:textColor="#00d4ff" android:layout_marginStart="4dp"/>
+            <Button android:id="@+id/btn_check_ip" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:text="🌐 IP" android:textSize="11sp" android:backgroundTint="#1a2a3a" android:textColor="#00d4ff" android:layout_marginStart="4dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Server list header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Серверы (пинг при проверке):"
+            android:textSize="13sp"
+            android:textColor="#6080a0"/>
+
+        <Button
+            android:id="@+id/btn_add_server"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:text="+"
+            android:textSize="18sp"
+            android:backgroundTint="#1a2a3a"
+            android:textColor="#00d4ff"
+            android:padding="0dp"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_servers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="#1a2a1a"
+        android:dividerHeight="1dp"/>
+
+</LinearLayout>

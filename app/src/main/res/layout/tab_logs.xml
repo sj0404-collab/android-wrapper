@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0a0a1a">
+
+    <!-- Logs Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1a1a0f"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📋 Логи"
+            android:textSize="18sp"
+            android:textColor="#ffc107"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btn_clear_logs"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="Очистить"
+            android:textSize="10sp"
+            android:backgroundTint="#3a2a1a"
+            android:textColor="#ffc107"/>
+
+        <Button
+            android:id="@+id/btn_export_logs"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="Экспорт"
+            android:textSize="10sp"
+            android:backgroundTint="#1a3a1a"
+            android:textColor="#4CAF50"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <!-- Log Filter -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <CheckBox
+            android:id="@+id/cb_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="INFO"
+            android:textSize="10sp"
+            android:textColor="#4CAF50"
+            android:checked="true"
+            android:layout_marginEnd="8dp"/>
+
+        <CheckBox
+            android:id="@+id/cb_warn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WARN"
+            android:textSize="10sp"
+            android:textColor="#FF9800"
+            android:checked="true"
+            android:layout_marginEnd="8dp"/>
+
+        <CheckBox
+            android:id="@+id/cb_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ERROR"
+            android:textSize="10sp"
+            android:textColor="#F44336"
+            android:checked="true"/>
+    </LinearLayout>
+
+    <!-- Logs List -->
+    <ListView
+        android:id="@+id/lv_logs"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="#1a1a1a"
+        android:dividerHeight="1dp"
+        android:background="#050510"/>
+
+</LinearLayout>

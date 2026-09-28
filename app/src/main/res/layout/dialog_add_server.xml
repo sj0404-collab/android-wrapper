@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#0f1628"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Название:"
+        android:textSize="13sp"
+        android:textColor="#6080a0"/>
+    <EditText
+        android:id="@+id/et_server_name"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:hint="Мой сервер"
+        android:textSize="14sp"
+        android:textColor="#e0e0e0"
+        android:textColorHint="#404060"
+        android:background="#1a1a30"
+        android:paddingStart="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Хост (IP или домен):"
+        android:textSize="13sp"
+        android:textColor="#6080a0"/>
+    <EditText
+        android:id="@+id/et_server_host"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:hint="1.2.3.4 или vpn.example.com"
+        android:textSize="14sp"
+        android:textColor="#e0e0e0"
+        android:textColorHint="#404060"
+        android:background="#1a1a30"
+        android:paddingStart="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Порт:"
+        android:textSize="13sp"
+        android:textColor="#6080a0"/>
+    <EditText
+        android:id="@+id/et_server_port"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:hint="443"
+        android:textSize="14sp"
+        android:textColor="#e0e0e0"
+        android:textColorHint="#404060"
+        android:background="#1a1a30"
+        android:paddingStart="12dp"
+        android:layout_marginTop="4dp"
+        android:inputType="number"/>
+
+</LinearLayout>
